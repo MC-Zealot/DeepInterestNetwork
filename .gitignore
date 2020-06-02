@@ -7,4 +7,4 @@
 *.json
 ./din/save_path/
 raw_data/
-*.pkl
+dataset.pkl
