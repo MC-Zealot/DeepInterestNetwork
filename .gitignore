@@ -8,3 +8,6 @@
 ./din/save_path/
 raw_data/
 dataset.pkl
+reviews.pkl
+reviews_Electronics_5.json
+meta_Electronics.json
