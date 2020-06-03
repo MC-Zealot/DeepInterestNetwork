@@ -26,15 +26,15 @@ with open('../din/dataset.pkl', 'rb') as f:
   user_count, item_count, cate_count = pickle.load(f)
 
 
-with open('train_set_mini.pkl', 'wb') as outfile1:
-  pickle.dump(train_set_mini, outfile1)
+with open('train_set_mini.pkl', 'w') as outfile1:
+  pickle.dump(train_set_mini, outfile1,0)
 
-with open('test_set_mini.pkl', 'wb') as outfile2:
-  pickle.dump(test_set_mini, outfile2)
+with open('test_set_mini.pkl', 'w') as outfile2:
+  pickle.dump(test_set_mini, outfile2,0)
 # with open(str('train_mini.pkl'), 'rb') as f:
 #     train_set = pickle.load(f)
 # word = pickle.load(open("train_mini.pkl", 'r'), encoding='utf-8')
-with open('train_mini.pkl', 'rb') as f3:
+with open('train_mini.pkl', 'r') as f3:
     data_dict = pickle.load(f3)
 # with open('test_mini.pkl', 'rb') as f1:
 #     test_set = pickle.load(f1)
