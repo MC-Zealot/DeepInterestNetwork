@@ -24,12 +24,7 @@ def read_csv():
   train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
   test_set_mini = pd.read_csv('test_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
   cate_list = pd.read_csv('cate_list.csv',header=None)
-  cate_list_ids=[]
-  for idx,cate_id in cate_list.iterrows():
-      t = cate_id[0]
-      cate_list_ids.append(t)
 
-  cate_list = DataFrame(cate_list_ids)
   return train_set_mini,test_set_mini,cate_list
 
 def get_count():
@@ -56,8 +51,12 @@ train_set_mini_arr_list = train_set_mini_arr.tolist()
 test_set_mini_arr = np.array(test_set_mini)
 test_set_mini_list = test_set_mini_arr.tolist()
 
-cate_list_arr = np.array(cate_list)
-cate_list = cate_list_arr.tolist()
+cate_list_ids = []
+for idx, cate_id in cate_list.iterrows():
+    t = cate_id[0]
+    cate_list_ids.append(t)
+
+cate_list = cate_list_ids
 # exit(0)
 train_set = train_set_mini_arr_list
 test_set = test_set_mini_list
