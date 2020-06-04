@@ -51,6 +51,9 @@ train_set_mini, test_set_mini, cate_list = read_csv()
 user_count = len(train_set_mini['user_id'].drop_duplicates())
 viewed_item_id = len(train_set_mini['viewed_item_id'].drop_duplicates())
 cate_count = len(train_set_mini['cate_list'].drop_duplicates())
+
+train_set_mini['viewed_item_id_list'] = train_set_mini.viewed_item_id.apply(lambda x: x[1:-1].split(','))
+
 # with open('train_set_mini.pkl', 'w') as outfile1:
 #   pickle.dump(train_set_mini, outfile1,0)
 #
