@@ -5,7 +5,7 @@ import random
 import numpy as np
 import tensorflow as tf
 import sys
-
+import pandas as pd
 from pandas.core.frame import DataFrame
 
 # os.environ['CUDA_VISIBLE_DEVICES'] = '1'
@@ -15,8 +15,7 @@ tf.compat.v1.set_random_seed(1234)
 
 train_batch_size = 32
 test_batch_size = 512
-a = "123"
-def process_data():
+def process_data_to_csv():
   with open('../din/dataset.pkl', 'rb') as f:
     train_set = pickle.load(f)
     train_set_mini = train_set[0:10000]
@@ -39,6 +38,17 @@ def process_data():
 
     cate_list_df = DataFrame(cate_list)
     cate_list_df.to_csv('cate_list.csv')
+
+
+def read_csv():
+  train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'])
+  test_set_mini = pd.read_csv('test_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'])
+  cate_list = pd.read_csv('cate_list.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'])
+  return train_set_mini,test_set_mini,cate_list
+
+
+train_set_mini, test_set_mini, cate_list = read_csv()
+
 # with open('train_set_mini.pkl', 'w') as outfile1:
 #   pickle.dump(train_set_mini, outfile1,0)
 #
