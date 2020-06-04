@@ -47,12 +47,22 @@ def read_csv():
   return train_set_mini,test_set_mini,cate_list
 
 
-train_set_mini, test_set_mini, cate_list = read_csv()
-user_count = len(train_set_mini['user_id'].drop_duplicates())
-viewed_item_id = len(train_set_mini['viewed_item_id'].drop_duplicates())
-cate_count = len(train_set_mini['cate_list'].drop_duplicates())
+def get_count():
+  all_item_id = []
+  user_count = len(train_set_mini['user_id'].drop_duplicates())
+  cate_count = len(train_set_mini['cate_list'].drop_duplicates())
 
-train_set_mini['viewed_item_id_list'] = train_set_mini.viewed_item_id.apply(lambda x: x[1:-1].split(','))
+  train_set_mini['viewed_item_id_list'] = train_set_mini.viewed_item_id.apply(lambda x: x[1:-1].split(','))
+  train_set_mini_item_id_list = train_set_mini.viewed_item_id_list
+  for item_id_list in train_set_mini_item_id_list:
+    all_item_id.extend(item_id_list)
+  all_item_id_df = DataFrame(all_item_id)
+  item_count = len(all_item_id_df.drop_duplicates())
+  return user_count, item_count, cate_count
+
+
+train_set_mini, test_set_mini, cate_list = read_csv()
+user_count, item_count, cate_count = get_count()
 
 # with open('train_set_mini.pkl', 'w') as outfile1:
 #   pickle.dump(train_set_mini, outfile1,0)
