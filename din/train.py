@@ -12,6 +12,7 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 random.seed(1234)
 np.random.seed(1234)
 tf.set_random_seed(1234)
+# tf.random.set_seed(1234)
 
 train_batch_size = 32
 test_batch_size = 512
@@ -88,7 +89,7 @@ def _test(sess, model):
   auc_sum = 0.0
   score_arr = []
   predicted_users_num = 0
-  print "test sub items"
+  print("test sub items")
   for _, uij in DataInputTest(test_set, predict_batch_size):
     if predicted_users_num >= predict_users_num:
         break

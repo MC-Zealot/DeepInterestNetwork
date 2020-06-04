@@ -16,8 +16,7 @@ class Model(object):
 
     user_emb_w = tf.get_variable("user_emb_w", [user_count, hidden_units])
     item_emb_w = tf.get_variable("item_emb_w", [item_count, hidden_units // 2])
-    item_b = tf.get_variable("item_b", [item_count],
-                             initializer=tf.constant_initializer(0.0))
+    item_b = tf.get_variable("item_b", [item_count], initializer=tf.constant_initializer(0.0))
     cate_emb_w = tf.get_variable("cate_emb_w", [cate_count, hidden_units // 2])
     cate_list = tf.convert_to_tensor(cate_list, dtype=tf.int64)
 
@@ -114,10 +113,8 @@ class Model(object):
 
     # Step variable
     self.global_step = tf.Variable(0, trainable=False, name='global_step')
-    self.global_epoch_step = \
-        tf.Variable(0, trainable=False, name='global_epoch_step')
-    self.global_epoch_step_op = \
-        tf.assign(self.global_epoch_step, self.global_epoch_step+1)
+    self.global_epoch_step = tf.Variable(0, trainable=False, name='global_epoch_step')
+    self.global_epoch_step_op = tf.assign(self.global_epoch_step, self.global_epoch_step+1)
 
     regulation_rate = 0.0
     self.loss = tf.reduce_mean(
@@ -132,8 +129,7 @@ class Model(object):
     #self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)
     gradients = tf.gradients(self.loss, trainable_params)
     clip_gradients, _ = tf.clip_by_global_norm(gradients, 5)
-    self.train_op = self.opt.apply_gradients(
-        zip(clip_gradients, trainable_params), global_step=self.global_step)
+    self.train_op = self.opt.apply_gradients(zip(clip_gradients, trainable_params), global_step=self.global_step)
 
 
   def train(self, sess, uij, l):

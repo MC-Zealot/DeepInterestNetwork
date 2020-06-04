@@ -7,6 +7,7 @@ import tensorflow as tf
 import sys
 import pandas as pd
 from pandas.core.frame import DataFrame
+from ast import literal_eval
 
 # os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 random.seed(1234)
@@ -15,34 +16,34 @@ tf.compat.v1.set_random_seed(1234)
 
 train_batch_size = 32
 test_batch_size = 512
-def process_data_to_csv():
-  with open('../din/dataset.pkl', 'rb') as f:
-    train_set = pickle.load(f)
-    train_set_mini = train_set[0:10000]
-    test_set = pickle.load(f)
-    test_set_mini = train_set[0:5000]
-    cate_list = pickle.load(f)
-    user_count, item_count, cate_count = pickle.load(f)
+# def process_data_to_csv():
+with open('../din/dataset.pkl', 'rb') as f:
+  train_set = pickle.load(f)
+  train_set_mini = train_set[0:10000]
+  test_set = pickle.load(f)
+  test_set_mini = train_set[0:5000]
+  cate_list = pickle.load(f)
+  user_count, item_count, cate_count = pickle.load(f)
 
-    train_set_mini_df = DataFrame(train_set_mini)
-    train_set_mini_df.to_csv('train_set_mini.csv')
+  train_set_mini_df = DataFrame(train_set_mini)
+  train_set_mini_df.to_csv('train_set_mini.csv',index=None)
 
-    train_set_df = DataFrame(train_set)
-    train_set_df.to_csv('train_set.csv')
+  train_set_df = DataFrame(train_set)
+  train_set_df.to_csv('train_set.csv', index=None)
 
-    test_set_df = DataFrame(test_set)
-    test_set_df.to_csv('test_set.csv')
+  test_set_df = DataFrame(test_set)
+  test_set_df.to_csv('test_set.csv', index=None)
 
-    test_set_mini_df = DataFrame(test_set_mini)
-    test_set_mini_df.to_csv('test_set_mini.csv')
+  test_set_mini_df = DataFrame(test_set_mini)
+  test_set_mini_df.to_csv('test_set_mini.csv', index=None)
 
-    cate_list_df = DataFrame(cate_list)
-    cate_list_df.to_csv('cate_list.csv')
-
-
+  cate_list_df = DataFrame(cate_list)
+  cate_list_df.to_csv('cate_list.csv', index=None)
+# process_data_to_csv()
+exit(0)
 def read_csv():
-  train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'])
-  test_set_mini = pd.read_csv('test_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'])
+  train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
+  test_set_mini = pd.read_csv('test_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
   cate_list = pd.read_csv('cate_list.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'])
   return train_set_mini,test_set_mini,cate_list
 
@@ -61,8 +62,12 @@ def get_count():
   return user_count, item_count, cate_count
 
 
+
 train_set_mini, test_set_mini, cate_list = read_csv()
 user_count, item_count, cate_count = get_count()
+
+test_set_mini_arr = np.array(test_set_mini)
+test_set_mini_list = test_set_mini_arr.tolist()
 
 # with open('train_set_mini.pkl', 'w') as outfile1:
 #   pickle.dump(train_set_mini, outfile1,0)
