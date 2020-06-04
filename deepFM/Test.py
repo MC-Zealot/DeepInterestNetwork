@@ -25,12 +25,25 @@ with open('../din/dataset.pkl', 'rb') as f:
   cate_list = pickle.load(f)
   user_count, item_count, cate_count = pickle.load(f)
 
+  train_set_mini_df = DataFrame(train_set_mini)
+  train_set_mini_df.to_csv('train_set_mini.csv')
 
-with open('train_set_mini.pkl', 'w') as outfile1:
-  pickle.dump(train_set_mini, outfile1,0)
+  train_set_df = DataFrame(train_set)
+  train_set_df.to_csv('train_set.csv')
 
-with open('test_set_mini.pkl', 'w') as outfile2:
-  pickle.dump(test_set_mini, outfile2,0)
+  test_set_df = DataFrame(test_set)
+  test_set_df.to_csv('test_set.csv')
+
+  test_set_mini_df = DataFrame(test_set_mini)
+  test_set_mini_df.to_csv('test_set_mini.csv')
+
+# with open('train_set_mini.pkl', 'w') as outfile1:
+#   pickle.dump(train_set_mini, outfile1,0)
+#
+# with open('test_set_mini.pkl', 'w') as outfile2:
+#   pickle.dump(test_set_mini, outfile2,0)
+
+
 # with open(str('train_mini.pkl'), 'rb') as f:
 #     train_set = pickle.load(f)
 # word = pickle.load(open("train_mini.pkl", 'r'), encoding='utf-8')
