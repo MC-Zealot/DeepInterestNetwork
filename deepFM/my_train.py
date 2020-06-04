@@ -40,24 +40,30 @@ def get_count():
   item_count = len(all_item_id_df.drop_duplicates())
   return user_count, item_count, cate_count
 
+
+def to_list(cate_list):
+    train_set_mini_arr = np.array(train_set_mini)
+
+    train_set_mini_arr_list = train_set_mini_arr.tolist()
+
+    test_set_mini_arr = np.array(test_set_mini)
+    test_set_mini_list = test_set_mini_arr.tolist()
+
+    cate_list_ids = []
+    for idx, cate_id in cate_list.iterrows():
+        t = cate_id[0]
+        cate_list_ids.append(t)
+
+    cate_list = cate_list_ids
+    return train_set_mini_arr_list, test_set_mini_list, cate_list
+
+
 train_set_mini, test_set_mini, cate_list = read_csv()
 
 user_count, item_count, cate_count = get_count()
 
-train_set_mini_arr = np.array(train_set_mini)
+train_set_mini_arr_list, test_set_mini_list, cate_list = to_list(cate_list)
 
-train_set_mini_arr_list = train_set_mini_arr.tolist()
-
-test_set_mini_arr = np.array(test_set_mini)
-test_set_mini_list = test_set_mini_arr.tolist()
-
-cate_list_ids = []
-for idx, cate_id in cate_list.iterrows():
-    t = cate_id[0]
-    cate_list_ids.append(t)
-
-cate_list = cate_list_ids
-# exit(0)
 train_set = train_set_mini_arr_list
 test_set = test_set_mini_list
 # with open('dataset.pkl', 'rb') as f:
