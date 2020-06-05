@@ -26,10 +26,11 @@ def read_csv():
   cate_list = pd.read_csv('cate_list.csv',header=None)
 
   return train_set_mini,test_set_mini,cate_list
-
+#看一下item count 和 cate count
 def get_count():
   all_item_id = []
   user_count = len(train_set_mini['user_id'].drop_duplicates())
+  cate_count = len(cate_list.drop_duplicates())
   cate_count = len(cate_list.drop_duplicates())
 
   # train_set_mini['viewed_item_id_list'] = train_set_mini.viewed_item_id.apply(lambda x: x[1:-1].split(','))
