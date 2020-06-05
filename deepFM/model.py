@@ -23,7 +23,7 @@ class Model(object):
     u_emb = tf.nn.embedding_lookup(user_emb_w, self.u)
 
     ic = tf.gather(cate_list, self.i)
-    i_emb = tf.concat(values = [
+    i_emb = tf.concat(values=[
         tf.nn.embedding_lookup(item_emb_w, self.i),
         tf.nn.embedding_lookup(cate_emb_w, ic),
         ], axis=1)
@@ -83,10 +83,7 @@ class Model(object):
     u_emb_all = tf.expand_dims(u_emb, 1)
     u_emb_all = tf.tile(u_emb_all, [1, item_count, 1])
     # logits for all item:
-    all_emb = tf.concat([
-        item_emb_w,
-        tf.nn.embedding_lookup(cate_emb_w, cate_list)
-        ], axis=1)
+    all_emb = tf.concat([item_emb_w, tf.nn.embedding_lookup(cate_emb_w, cate_list)], axis=1)
     all_emb = tf.expand_dims(all_emb, 0)
     all_emb = tf.tile(all_emb, [512, 1, 1])
     din_all = tf.concat([u_emb_all, all_emb], axis=-1)
