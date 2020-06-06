@@ -25,6 +25,7 @@ with open('dataset.pkl', 'rb') as f:
 best_auc = 0.0
 print("train_set 0", train_set[0])
 print("test_set 0", test_set[0])
+print(user_count, item_count, cate_count)
 exit(0)
 def calc_auc(raw_arr):
     """Summary

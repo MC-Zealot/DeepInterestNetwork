@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+from input import DataInput, DataInputTest
 def calc_auc(raw_arr):
     """Summary
 
@@ -43,7 +44,7 @@ def _auc_arr(score):
     score_arr.append([1, 0, s])
   return score_arr
 
-def _eval(sess, model):
+def _eval(sess, model,test_set, test_batch_size, best_auc):
   auc_sum = 0.0
   score_arr = []
   for _, uij in DataInputTest(test_set, test_batch_size):
@@ -52,8 +53,8 @@ def _eval(sess, model):
     auc_sum += auc_ * len(uij[0])
   test_gauc = auc_sum / len(test_set)
   Auc = calc_auc(score_arr)
-  global best_auc
+  # global best_auc
   if best_auc < test_gauc:
     best_auc = test_gauc
     model.save(sess, 'save_path/ckpt')
-  return test_gauc, Auc
+  return test_gauc, Auc,best_auc
