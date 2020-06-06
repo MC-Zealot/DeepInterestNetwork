@@ -1,4 +1,7 @@
 #-*- coding:utf-8 -*-
+import numpy as np
+import pandas as pd
+
 from input import DataInput, DataInputTest
 def calc_auc(raw_arr):
     """Summary
@@ -58,3 +61,53 @@ def _eval(sess, model,test_set, test_batch_size, best_auc):
     best_auc = test_gauc
     model.save(sess, 'save_path/ckpt')
   return test_gauc, Auc,best_auc
+
+def read_csv():
+  train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],
+                               dtype={'item_id': np.int},
+                               converters={"viewed_item_id": lambda x: map(int, x.strip("[]").split(", "))})
+
+  test_set_mini = pd.read_csv('test_set_mini.csv',
+                              names=['user_id', 'viewed_item_id', 'click_and_not_click_item_id'],
+                              dtype={'item_id': np.int},
+                              converters={"viewed_item_id": lambda x: map(int, x.strip("[]").split(", ")),
+                                          "click_and_not_click_item_id":lambda x: map(int, x.strip("()").split(", "))})
+  cate_list = pd.read_csv('cate_list.csv',header=None)
+
+  return train_set_mini, test_set_mini, cate_list
+
+
+def get_count(cate_list):
+  cate_count = len(cate_list.drop_duplicates())
+  user_count = 192403
+  item_count = 63001
+  return user_count, item_count, cate_count
+
+
+def to_list(train_set_mini, test_set_mini,cate_list):
+    """
+    转换成模型的输入的样子
+    :param cate_list:
+    :return:
+    """
+    train_set_mini_arr = np.array(train_set_mini)
+    train_set_mini_arr_list = train_set_mini_arr.tolist()
+
+    test_set_mini_arr = np.array(test_set_mini)
+    test_set_mini_list = test_set_mini_arr.tolist()
+
+    cate_list_ids = []
+    for idx, cate_id in cate_list.iterrows():
+        t = cate_id[0]
+        cate_list_ids.append(t)
+
+    cate_list = cate_list_ids
+    return train_set_mini_arr_list, test_set_mini_list, cate_list
+
+def get_all_data():
+    train_set_mini, test_set_mini, cate_list = read_csv()
+
+    user_count, item_count, cate_count = get_count()
+
+    train_set, test_set, cate_list = to_list(train_set_mini, test_set_mini,cate_list)
+    return train_set, test_set, cate_list, user_count, item_count, cate_count
