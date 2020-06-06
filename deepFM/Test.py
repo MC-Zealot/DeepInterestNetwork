@@ -21,12 +21,13 @@ with open('../din/dataset.pkl', 'rb') as f:
   train_set = pickle.load(f)
   train_set_mini = train_set[0:10000]
   test_set = pickle.load(f)
-  test_set_mini = train_set[0:5000]
+  test_set_mini = test_set[0:5000]
   cate_list = pickle.load(f)
   user_count, item_count, cate_count = pickle.load(f)
 
+  exit(0)
   train_set_mini_df = DataFrame(train_set_mini)
-  train_set_mini_df.to_csv('train_set_mini.csv',index=None)
+  train_set_mini_df.to_csv('train_set_mini.csv', index=None)
 
   train_set_df = DataFrame(train_set)
   train_set_df.to_csv('train_set.csv', index=None)
@@ -41,9 +42,21 @@ with open('../din/dataset.pkl', 'rb') as f:
   cate_list_df.to_csv('cate_list.csv', index=None)
 # process_data_to_csv()
 exit(0)
+
+def fun(x):
+  str_list = x.strip("[]").split(", ")
+
 def read_csv():
-  train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
-  test_set_mini = pd.read_csv('test_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
+
+  # train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int}, converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
+  train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],
+                               dtype={'item_id': np.int},
+                               converters={"viewed_item_id": lambda x: map(int, x.strip("[]").split(", "))})
+  # test_set_mini = pd.read_csv('test_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int}, converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
+  test_set_mini = pd.read_csv('test_set_mini.csv',
+                              names=['user_id', 'viewed_item_id', 'item_id_viewed', 'item_id_not_viewed'],
+                              dtype={'item_id': np.int},
+                              converters={"viewed_item_id": lambda x: map(int, x.strip("[]").split(", "))})
   cate_list = pd.read_csv('cate_list.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'])
   return train_set_mini,test_set_mini,cate_list
 

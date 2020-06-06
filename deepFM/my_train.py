@@ -1,3 +1,4 @@
+#-*- coding:utf-8 -*-
 import os
 import time
 import pickle
@@ -21,8 +22,17 @@ test_batch_size = 512
 
 
 def read_csv():
-  train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
-  test_set_mini = pd.read_csv('test_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
+  # train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],dtype={'label':np.int},converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
+  # test_set_mini = pd.read_csv('test_set_mini.csv', names=['user_id', 'viewed_item_id', 'click_and_not_click_item_id'],converters={"viewed_item_id": lambda x: x.strip("[]").split(", ")})
+  train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'],
+                               dtype={'item_id': np.int},
+                               converters={"viewed_item_id": lambda x: map(int, x.strip("[]").split(", "))})
+
+  test_set_mini = pd.read_csv('test_set_mini.csv',
+                              names=['user_id', 'viewed_item_id', 'click_and_not_click_item_id'],
+                              dtype={'item_id': np.int},
+                              converters={"viewed_item_id": lambda x: map(int, x.strip("[]").split(", ")),
+                                          "click_and_not_click_item_id":lambda x: map(int, x.strip("()").split(", "))})
   cate_list = pd.read_csv('cate_list.csv',header=None)
 
   return train_set_mini,test_set_mini,cate_list
@@ -30,7 +40,6 @@ def read_csv():
 def get_count():
   all_item_id = []
   user_count = len(train_set_mini['user_id'].drop_duplicates())
-  cate_count = len(cate_list.drop_duplicates())
   cate_count = len(cate_list.drop_duplicates())
 
   # train_set_mini['viewed_item_id_list'] = train_set_mini.viewed_item_id.apply(lambda x: x[1:-1].split(','))
@@ -64,9 +73,12 @@ train_set_mini, test_set_mini, cate_list = read_csv()
 user_count, item_count, cate_count = get_count()
 
 train_set_mini_arr_list, test_set_mini_list, cate_list = to_list(cate_list)
-
+cate_list = cate_list[:item_count]#每一个cate都一一对应一个Item
 train_set = train_set_mini_arr_list
 test_set = test_set_mini_list
+print("train_set 0", train_set[0])
+print("test_set 0", test_set[0])
+# exit(0)
 # with open('dataset.pkl', 'rb') as f:
 #   train_set = pickle.load(f)
 #   test_set = pickle.load(f)

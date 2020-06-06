@@ -1,3 +1,4 @@
+#-*- coding:utf-8 -*-
 import numpy as np
 
 class DataInput:
@@ -61,10 +62,11 @@ class DataInputTest:
     ts = self.data[self.i * self.batch_size : min((self.i+1) * self.batch_size,
                                                   len(self.data))]
     self.i += 1
-
+    # 生成test_set（(reviewerID, hist, (最后点击的广告的id, 随机出的一个未点击的广告的id))）
     u, i, j, sl = [], [], [], []
     for t in ts:
       u.append(t[0])
+      # print(t[2])
       i.append(t[2][0])
       j.append(t[2][1])
       sl.append(len(t[1]))

@@ -1,17 +1,8 @@
-import pickle
-class Person:
-    def __init__(self,n,a):
-        self.name=n
-        self.age=a
-    def show(self):
-        print self.name+"_"+str(self.age)
-aa = Person("JGood", 2)
-aa.show()
-f=open('p.txt','w')
-pickle.dump(aa,f,0)
-f.close()
-#del Person
-f=open('p.txt','r')
-bb=pickle.load(f)
-f.close()
-bb.show()
+import pandas as pd
+import numpy as np
+train_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id', 'label'], dtype={ 'item_id':np.int}, converters={"viewed_item_id": lambda x: map(int, x.strip("[]").split(", "))})
+
+test_set_mini = pd.read_csv('train_set_mini.csv', names=['user_id', 'viewed_item_id', 'item_id_viewed', 'item_id_not_viewed'], dtype={ 'item_id':np.int}, converters={"viewed_item_id": lambda x: map(int, x.strip("[]").split(", "))})
+
+print(train_set_mini.dtypes)
+print(test_set_mini.dtypes)
