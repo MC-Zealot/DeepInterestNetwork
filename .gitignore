@@ -12,3 +12,4 @@ reviews.pkl
 reviews_Electronics_5.json
 meta_Electronics.json
 .DS_Store
+./deepFM/save_path/
